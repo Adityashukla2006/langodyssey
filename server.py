@@ -1,13 +1,10 @@
-from scipy.io.wavfile import write
-import av
+
 import os
-import numpy as np
-from streamlit_webrtc import AudioProcessorBase, webrtc_streamer
 from api.sarvam_api import SarvamAPI
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
-from langchain.chains import LLMChain
-from langchain.memory import ConversationBufferMemory
+from langchain_classic.chains import LLMChain
+from langchain_classic.memory import ConversationBufferMemory
 from dotenv import load_dotenv
 import streamlit as st 
 import streamlit_authenticator as stauth
@@ -22,15 +19,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# Audio Recorder Class
-class AudioRecorder(AudioProcessorBase):
-    def __init__(self):
-        self.frames = []
-
-    def recv(self, frame: av.AudioFrame) -> av.AudioFrame:
-        audio = frame.to_ndarray()
-        self.frames.append(audio)
-        return frame
 
 # Initialize session state
 def init_session_state():
@@ -53,35 +41,38 @@ def init_session_state():
 
 def init_prompts():
     lesson_prompt = PromptTemplate(
-        input_variables=["level", "stage", "prompt", "language"],
-        template="""
-You are a tutor helping a {level}-level and {stage}-stage English learner who speaks {language}.
-Give the lesson : {prompt} to the user.
+    input_variables=["level", "stage", "prompt", "language"],
+    template="""
+You are a tutor helping a {level}-level and {stage}-stage {language} learner.
+Give the lesson: {prompt} to the user.
 
-Start with what we're going to be learning today - {prompt}
-Then explain what {prompt} means in {language}.
-Tell the user how to reply to the prompt in {language}.
-Then ask the user in {language} to respond in English to the prompt.
-Everything should be in {language} except the English prompt."""
-    )
-
-    tutor_prompt = PromptTemplate( 
-        input_variables=["level","stage", "prompt", "notes_for_ai", "input", "language"],
-        template="""
-You are a tutor helping a {level}-level and {stage}-stage English learner who speaks {language}.
-Lesson: {prompt}
-Notes for you: {notes_for_ai}
-User said (in {language}): {input}
-
-Respond by:
-1. Translating or interpreting what the user said.
-2. Correcting their English sentence if needed.
-3. Giving feedback.
-
-Now guide them to improve naturally, like in a friendly conversation.
-Everything should be in {language} except the corrected English sentence.
+Start with what we're going to be learning today: {prompt}
+Then explain what {prompt} means in {language}, using the native script of {language}.
+Tell the user how to reply to the prompt in English, using the native script.
+Then ask the user in {language}, using the native script, to respond in English to the prompt.
+Everything should be written in the {language} language and script except the English prompt.
 """
-    )
+)
+
+
+    tutor_prompt = PromptTemplate(
+    input_variables=["level", "stage", "prompt", "notes_for_ai", "input", "language"],
+    template="""
+You are an English tutor for a {level}-level, {stage}-stage learner who speaks {language}. 
+Lesson: "{prompt}"
+Notes: {notes_for_ai}
+User said (in {language}): "{input}"
+
+Instructions:
+1. Interpret what the user meant.
+2. Correct their English sentence if needed (show only the correction).
+3. Explain the correction in {language} if needed, using native script.
+4. Give feedback and guide them to respond naturally, in {language}, using native script.
+5. If the sentence means something different, explain in {language} what they said and be strict about the meaning.
+Keep everything in {language} except the corrected English sentence.
+"""
+)
+
 
     evaluation_prompt = PromptTemplate(
         input_variables=["level", "stage", "feedback", "expected_response", "user_response", "language"],
@@ -284,11 +275,6 @@ def main():
                 st.rerun()
         else:
             st.warning("📖 Let's try that lesson again!")
-            translated_feedback = sarvam_api.translate_text(
-                text=f"Let's try that lesson again. {feedback_data['feedback']}", 
-                target_language=language
-            )
-            st.write("**Translated Feedback:**", translated_feedback)
             
             if st.button("🔄 Try Again", use_container_width=True):
                 # Reset only for retry

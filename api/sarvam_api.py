@@ -1,18 +1,11 @@
 import os
 import requests
-import json
 import base64
-import tempfile
 from typing import Optional, Dict, Any
 from dotenv import load_dotenv
-import pyaudio
-import wave
 
 load_dotenv()
-FORMAT=pyaudio.paInt16
-CHANNELS = 1
-RATE = 44100
-CHUNK = 1024
+
 
 class SarvamAPI:
     """Client for Sarvam AI's text-to-speech and speech-to-text APIs"""
@@ -25,7 +18,7 @@ class SarvamAPI:
         
         self.tts_url = "https://api.sarvam.ai/text-to-speech"
         self.stt_url = "https://api.sarvam.ai/speech-to-text"
-        self.audio = pyaudio.PyAudio()
+        
     
     def text_to_speech(self, text: str, output_path: Optional[str] = None) -> Dict[str, Any]:
         """
@@ -101,31 +94,6 @@ class SarvamAPI:
         except (requests.exceptions.RequestException, IOError) as e:
             print(f"Error during speech-to-text: {e}")
             return ""
-    
-    def voice_recording(self):
-        stream=self.audio.open(format=FORMAT, channels = CHANNELS, 
-                          rate = RATE, input = True, frames_per_buffer= CHUNK)
-        print("Recording...")
-        frames = [] 
-        try:
-            while True:
-                data = stream.read(CHUNK)
-                frames.append(data)
-        except KeyboardInterrupt:
-            print("Recording stopped by user!")
-        finally:
-            stream.stop_stream()
-            stream.close()
-            self.audio.terminate()
-
-        os.makedirs("Temp_recordings", exist_ok=True)
-        self.temp_path = os.path.join("Temp_recordings","temp_audio.wav")
-        with wave.open(self.temp_path, 'wb') as wf:
-            wf.setnchannels(CHANNELS)
-            wf.setsampwidth(self.audio.get_sample_size(FORMAT))
-            wf.setframerate(RATE)
-            wf.writeframes(b''.join(frames))
-        print("Recording saved!")
     
     def translate_text(self, text: str, target_language: str) -> str:
         """
