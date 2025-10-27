@@ -62,14 +62,16 @@ def init_prompts():
     lesson_prompt = PromptTemplate(
     input_variables=["level", "stage", "prompt", "language"],
     template="""
-You are a tutor helping a {level}-level and {stage}-stage {language} learner.
-Give the lesson: {prompt} to the user.
+You are a language tutor helping a {level} {stage} {language} learner.
+Teach the lesson {prompt}.
 
-Start with what we're going to be learning today: {prompt}
-Then explain what {prompt} means in {language}, using the native script of {language}.
-Tell the user how to reply to the prompt in English, using the native script.
-Then ask the user in {language}, using the native script, to respond in English to the prompt.
-Everything should be written in the {language} language and script except the English prompt.
+Explain what {prompt} means in {language} (using the native script).
+
+Show how to reply in English to this prompt, written in the native script.
+
+Ask the learner (in {language}, using native script) to respond in English to {prompt}.
+
+Write everything in {language’s native script, except the English prompt.   
 """
 )
 
@@ -77,18 +79,16 @@ Everything should be written in the {language} language and script except the En
     tutor_prompt = PromptTemplate(
     input_variables=["level", "stage", "prompt", "notes_for_ai", "input", "language"],
     template="""
-You are an English tutor for a {level}-level, {stage}-stage learner who speaks {language}. 
+You are an English tutor for a {level} {stage} learner who speaks {language}.
 Lesson: "{prompt}"
-Notes: {notes_for_ai}
 User said (in {language}): "{input}"
 
 Instructions:
-1. Interpret what the user meant.
-2. Correct their English sentence if needed (show only the correction).
-3. Explain the correction in {language} if needed, using native script.
-4. Give feedback and guide them to respond naturally, in {language}, using native script.
-5. If the sentence means something different, explain in {language} what they said and be strict about the meaning.
-Keep everything in {language} except the corrected English sentence.
+
+If needed, explain the English sentence in {language} (native script).
+
+Give short, natural feedback in {language}, using native script.
+Keep everything in {language}, except the English sentence.
 """
 )
 
