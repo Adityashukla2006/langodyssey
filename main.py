@@ -139,7 +139,6 @@ def main():
                 st.session_state.audio_saved = False
                 st.session_state.show_feedback = False
                 st.session_state.feedback_data = {}
-                
                 st.rerun()
 
     # Exit button
