@@ -20,7 +20,7 @@ class SarvamAPI:
         self.stt_url = "https://api.sarvam.ai/speech-to-text"
         
     
-    def text_to_speech(self, text: str, output_path: Optional[str] = None) -> Dict[str, Any]:
+    def text_to_speech(self, text: str, output_path: Optional[str] = None):
         """
         Convert text to speech using Sarvam's TTS API
         
@@ -32,10 +32,12 @@ class SarvamAPI:
             Dictionary with audio data and file path if saved
         """
         payload = {
-            "input": text,
+            "text": text,
+            "target_language_code": "en-IN",
         }
         headers = {
-            "api-subscription-key":os.getenv("SARVAM_API_KEY")
+            "api-subscription-key":os.getenv("SARVAM_API_KEY"),
+            "Content-Type": "application/json"
         }
         
         try:
@@ -43,28 +45,31 @@ class SarvamAPI:
             response.raise_for_status()
             
             result = response.json()
-            audio_data = base64.b64decode(result.get("audio", ""))
+
+            audio_field = result.get("audios")
+            if isinstance(audio_field, list):
+                audio_field = audio_field[0] if audio_field else ""
+
+            audio_data = base64.b64decode(audio_field)
+            return audio_data
+
             
-            result_dict = {
-                "success": True,
-                "audio_base64": result.get("audio", ""),
-                "file_path": None
-            }
+            # result_dict = {
+            #     "success": True,
+            #     "audio_base64": result.get("audio", ""),
+            #     "file_path": None
+            # }
             
-            # Save audio file if output_path is provided
-            if output_path:
-                with open(output_path, "wb") as audio_file:
-                    audio_file.write(audio_data)
-                result_dict["file_path"] = output_path
+            # # Save audio file if output_path is provided
+            # if output_path:
+            #     with open(output_path, "wb") as audio_file:
+            #         audio_file.write(audio_data)
+            #     result_dict["file_path"] = output_path
             
-            return result_dict
+            # return result_dict
             
         except requests.exceptions.RequestException as e:
-            return {
-                "success": False,
-                "error": str(e),
-                "file_path": None
-            }
+            return e
     
     def speech_to_text(self, audio_file_path: str) -> Dict[str, Any]:
         """
@@ -108,11 +113,13 @@ class SarvamAPI:
         """
         translation_url = "https://api.sarvam.ai/translate"
         payload = {
-            "text": text,
-            "target_language": target_language
+            "input": text,
+            "source_language_code": "en-IN",
+            "target_language_code": target_language+"-IN"
         }
         headers = {
-            "api-subscription-key": os.getenv("SARVAM_API_KEY")
+            "api-subscription-key": os.getenv("SARVAM_API_KEY"),
+            "Content-Type": "application/json"
         }
         
         try:

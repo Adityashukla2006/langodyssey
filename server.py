@@ -9,8 +9,11 @@ from dotenv import load_dotenv
 import streamlit as st 
 import streamlit_authenticator as stauth
 from database.user_progress_db import UserProgressDB
-
+    
 load_dotenv()
+sarvam_api = SarvamAPI()
+llm = ChatOpenAI()
+db = UserProgressDB()
 
 # Page config
 st.set_page_config(
@@ -19,13 +22,13 @@ st.set_page_config(
     layout="wide"
 )
 
-
-# Initialize session state
 def init_session_state():
+    if 'authenticated' not in st.session_state:
+        st.session_state.authenticated = False
     if 'memory' not in st.session_state:
         st.session_state.memory = ConversationBufferMemory()
     if 'user_id' not in st.session_state:
-        st.session_state.user_id = 1
+        st.session_state.user_id = None
     if 'lesson_started' not in st.session_state:
         st.session_state.lesson_started = False
     if 'current_lesson' not in st.session_state:
@@ -38,6 +41,22 @@ def init_session_state():
         st.session_state.show_feedback = False
     if 'feedback_data' not in st.session_state:
         st.session_state.feedback_data = {}
+
+
+def creds_entered():
+    if db.check_user(st.session_state.user, st.session_state.passwd):
+        st.session_state.authenticated = True
+        st.session_state.user_id = db.get_user_id(st.session_state.user)
+        return True
+    else:
+        st.session_state.authenticated = False
+        st.error("Username/password is incorrect")
+        return False
+def authentication():
+    st.text_input(label="Name: ",value="",key="user")
+    st.text_input(label="Password",value="",key="passwd",type="password")
+    st.button("Login",on_click=creds_entered)
+
 
 def init_prompts():
     lesson_prompt = PromptTemplate(
@@ -93,11 +112,7 @@ Return only the score.
     
     return lesson_prompt, tutor_prompt, evaluation_prompt
 
-def init_apis_and_chains():
-    sarvam_api = SarvamAPI()
-    llm = ChatOpenAI()
-    db = UserProgressDB()
-    
+def init_apis_and_chains():    
     lesson_prompt, tutor_prompt, evaluation_prompt = init_prompts()
     
     lesson_chain = LLMChain(llm=llm, prompt=lesson_prompt)
@@ -107,9 +122,9 @@ def init_apis_and_chains():
     return sarvam_api, db, lesson_chain, evaluation_chain, tutor_chain
 
 def get_user_data(db, user_id):
-    language = "Hindi"  # db.get_user_language(user_id)
-    stage = "L1"  # db.get_user_level_and_stage(user_id)[0]
-    level = "Beginner"  # db.get_user_level_and_stage(user_id)[1]
+    language = db.get_user_language(user_id)
+    stage = db.get_user_level_and_stage(user_id)[0]
+    level = db.get_user_level_and_stage(user_id)[1]
     return language, stage, level
 
 def start_lesson(db, lesson_chain, prompt_id, level, stage, language):
@@ -123,7 +138,6 @@ def start_lesson(db, lesson_chain, prompt_id, level, stage, language):
     )
     
     return lesson
-
     
 
 def save_audio():
@@ -133,6 +147,12 @@ def save_audio():
             f.write(audio_value.getbuffer())
             return True
     return False
+
+def expectedResponseAudio():
+    expected_response = db.get_expected_response(st.session_state.prompt_id)
+    print(expected_response)
+    audio_bytes = sarvam_api.text_to_speech(expected_response)
+    st.audio(audio_bytes, format="audio/wav")
 
 def process_response(sarvam_api, db, tutor_chain, evaluation_chain, prompt_id, level, stage, language, threshold):
     prompt = db.get_prompt(prompt_id)
@@ -188,11 +208,22 @@ def reset_lesson_state():
     st.session_state.feedback_data = {}
 
 def main():
-    # Initialize
     init_session_state()
+    st.title("Welcome to LangOdyssey! Please authenticate yourself.")
+    if not st.session_state.authenticated:
+        authentication()
+        return
     sarvam_api, db, lesson_chain, evaluation_chain, tutor_chain = init_apis_and_chains()
     language, stage, level = get_user_data(db, st.session_state.user_id)
     threshold = 0.6
+
+    if(st.session_state.prompt_id % 26 ==0):
+        st.success("🎉 Congratulations! You have completed all lessons in this stage." \
+        "You will be advanced to the next stage.")
+    
+    if(st.session_state.prompt_id % 101 ==0):
+        st.success("🎉 Congratulations! You have completed all stages in this level." \
+        "You will be advanced to the next level.")
     
     # UI Layout
     st.title("🎓 Language Learning Tutor")
@@ -229,6 +260,8 @@ def main():
         if st.session_state.current_lesson:
             st.info("🎯 **Current Lesson:**")
             st.write(st.session_state.current_lesson)
+            st.markdown("### " + sarvam_api.translate_text("Expected Response Audio", target_language="hi"))
+            expectedResponseAudio()
     
     with col2:
         st.subheader("🎤 Audio Recording")
@@ -287,6 +320,7 @@ def main():
     if st.button("🚪 Exit Learning", type="primary"):
         db.update_user_progress(st.session_state.user_id, st.session_state.prompt_id)
         reset_lesson_state()
+        st.session_state.authenticated = False
         st.success("You have exited the learning session. 👋")
         st.rerun()
     
