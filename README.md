@@ -32,7 +32,6 @@ An AI-powered English learning application designed specifically for Indian lear
 1. **Clone the repository**
 ```bash
 git clone <repository-url>
-cd LangOdyssey
 ```
 
 2. **Install dependencies**
@@ -82,7 +81,7 @@ psql -h localhost -U your_postgres_user -d langodyssey -c "\copy promptid FROM '
 
 1. **Start the application**
 ```bash
-streamlit run app.py
+streamlit run main.py
 ```
 
 2. **Access the interface**
@@ -135,3 +134,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ---
 
 **Happy Learning! 🚀**
+
