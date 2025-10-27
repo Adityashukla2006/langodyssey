@@ -352,3 +352,33 @@ class UserProgressDB:
         except Exception as e:
             print(f"Error retrieving expected response: {e}")
             return None
+    
+    def get_user_data(self, user_id: str) -> Optional[tuple]:
+        language = self.get_user_language(user_id)
+        stage = self.get_user_level_and_stage(user_id)[0]
+        level = self.get_user_level_and_stage(user_id)[1]
+        return language, stage, level
+
+    def update_user_level_and_stage(self, user_id: str, level: int, stage: int) -> bool:
+        """
+        Update the user's level and stage.
+        
+        Args:
+            user_id: Unique identifier for the user
+            level: New level value
+            stage: New stage value
+            
+        Returns:
+            bool: True if update successful, False otherwise
+        """
+        try:
+            with self._get_connection() as (conn, cursor):
+                cursor.execute(
+                    "UPDATE users SET current_level = %s, current_stage = %s WHERE user_id = %s",
+                    (level, stage, user_id)
+                )
+                conn.commit()
+                return True
+        except Exception as e:
+            print(f"Error updating user level and stage: {e}")
+            return False
