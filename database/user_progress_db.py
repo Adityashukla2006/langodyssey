@@ -55,6 +55,7 @@ class UserProgressDB:
             self._create_users_table(cursor)
             self._create_lessons_table(cursor)
             self._create_user_feedback_table(cursor)
+            self._create_promptID_table(cursor)
             conn.commit()
     
     def _create_users_table(self, cursor):
@@ -93,7 +94,15 @@ class UserProgressDB:
                 feedback TEXT
             )
         """)
-
+    def _create_promptID_table(self,cursor):
+        """Create the promptID table."""
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS promptID (
+                prompt_id INTEGER,
+                level VARCHAR(50),
+                stage VARCHAR(50)
+            )
+        """)
     # User Management Methods
     def create_user(self, user_id: str, name: Optional[str] = None) -> bool:
         """
@@ -163,24 +172,38 @@ class UserProgressDB:
             print(f"Error retrieving user ID: {e}")
             return None
     # User Data Retrieval Methods
-    def get_user_level(self, user_id: str) -> Optional[str]:
+    def get_user_level_stage_language(self, user_id: str) -> Optional[tuple]:
         """
-        Retrieve the current lesson level of a user.
-        
+        Retrieve the current level and stage of a user.
+        Args:
+            user_id: Unique identifier for the user
         Args:
             user_id: Unique identifier for the user
             
         Returns:
-            Optional[str]: Current level of the user, or None if not found
+            Optional[tuple]: (current_level, current_stage) or None if not found
         """
         try:
             with self._get_connection(dict_cursor=True) as (conn, cursor):
-                cursor.execute("SELECT current_level FROM users WHERE user_id = %s", (user_id,))
+                cursor.execute("SELECT current_level, current_stage, language FROM users WHERE user_id = %s", (user_id,))
                 result = cursor.fetchone()
-                return result["current_level"] if result else None
+                return (result["current_level"], result["current_stage"], result["language"]) if result else None
         except Exception as e:
-            print(f"Error retrieving user level: {e}")
+            print(f"Error retrieving user level, stage, and language: {e}")
             return None
+
+    def update_user_level_and_stage(self, user_id: str, new_level: str, new_stage: str) -> bool:
+            try:
+                with self._get_connection() as (conn, cursor):
+                    cursor.execute(
+                        "UPDATE users SET current_level = %s, current_stage = %s WHERE user_id = %s",
+                        (new_level, new_stage, user_id)
+                    )
+                    conn.commit()
+                    return True
+            except Exception as e:
+                print(f"Error updating user level and stage: {e}")
+                return False
     
     def get_user_progress(self, user_id: str) -> Dict[str, Any]:
         """

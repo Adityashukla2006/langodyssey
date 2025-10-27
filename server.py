@@ -1,4 +1,3 @@
-
 import os
 from api.sarvam_api import SarvamAPI
 from langchain_core.prompts import PromptTemplate
@@ -36,7 +35,7 @@ def init_session_state():
     if 'audio_saved' not in st.session_state:
         st.session_state.audio_saved = False
     if 'prompt_id' not in st.session_state:
-        st.session_state.prompt_id = 1
+        st.session_state.prompt_id = None
     if 'show_feedback' not in st.session_state:
         st.session_state.show_feedback = False
     if 'feedback_data' not in st.session_state:
@@ -47,6 +46,7 @@ def creds_entered():
     if db.check_user(st.session_state.user, st.session_state.passwd):
         st.session_state.authenticated = True
         st.session_state.user_id = db.get_user_id(st.session_state.user)
+        st.session_state.prompt_id = db.get_user_progress(st.session_state.user_id) or 1
         return True
     else:
         st.session_state.authenticated = False
@@ -126,6 +126,10 @@ def get_user_data(db, user_id):
     stage = db.get_user_level_and_stage(user_id)[0]
     level = db.get_user_level_and_stage(user_id)[1]
     return language, stage, level
+
+def updateUserLevelAndStage():
+    level, stage, language = db.get_user_level_stage_language(st.session_state.user_id)
+    db.update_user_level_and_stage(st.session_state.user_id, level, stage)
 
 def start_lesson(db, lesson_chain, prompt_id, level, stage, language):
     prompt = db.get_prompt(prompt_id)
@@ -214,7 +218,7 @@ def main():
         authentication()
         return
     sarvam_api, db, lesson_chain, evaluation_chain, tutor_chain = init_apis_and_chains()
-    language, stage, level = get_user_data(db, st.session_state.user_id)
+    level, stage, language = db.get_user_level_stage_language(st.session_state.user_id)
     threshold = 0.6
 
     if(st.session_state.prompt_id % 26 ==0):
@@ -304,6 +308,7 @@ def main():
             
             if st.button("➡️ Continue to Next Lesson", type="primary", use_container_width=True):
                 st.session_state.prompt_id += 1
+                updateUserLevelAndStage()
                 reset_lesson_state()
                 st.rerun()
         else:

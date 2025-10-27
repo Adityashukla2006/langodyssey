@@ -1,0 +1,101 @@
+prompt,expected_user_response,notes_for_ai,stage,level,prompt_id
+Hello! What's your name?,My name is [user's name]. / I am [user's name].,Accept either full sentence or just the name.,Beginner,L1,1
+Nice to meet you! How are you today?,I am good. / Good. / Happy. / Fine.,Any simple positive or neutral feeling is great.,Beginner,L1,2
+Where are you from?,I am from [country]. / [Country].,"Full sentence is ideal, but country name alone is acceptable.",Beginner,L1,3
+Do you like to learn English?,"Yes, I do. / Yes. / Yes, I like.","Focus on the ""Yes/No"" comprehension. ""Yes, I like"" is a common beginner phrasing.",Beginner,L1,4
+What is your favorite color?,My favorite color is blue. / Blue.,Accept the color name.,Beginner,L1,5
+"Can you say ""hello"" in English?",Hello!,Simple repetition.,Beginner,L1,6
+What is this? (AI shows a picture of a book),It is a book. / Book.,Focus on naming the object.,Beginner,L1,7
+Is this a chair? (AI shows a table),"No, it is not. / No. / No, it is table.","Check for ""No"" and basic identification. Imperfect sentence is fine.",Beginner,L1,8
+Do you have a pet?,"Yes, I have a dog. / No, I don't. / Yes. / No.","Simple ""Yes/No"" or basic pet identification.",Beginner,L1,9
+What is one thing you like to eat?,I like pizza. / Pizza. / Rice.,Food item is sufficient.,Beginner,L1,10
+Are you a student?,"Yes, I am. / Yes. / No, I am not.","Focus on ""Yes/No"" and basic self-identification.",Beginner,L1,11
+What is your job?,I am a student. / I am a doctor. / I don't have job.,Simple job title or stating they don't have one.,Beginner,L1,12
+How many brothers or sisters do you have?,I have one brother. / I have two sisters. / Zero.,"Numbers and basic family terms. ""Zero"" is fine.",Beginner,L1,13
+What time is it now? (AI shows 9:00),It is nine o'clock. / Nine.,Accept the number.,Beginner,L1,14
+Do you like coffee or tea?,I like coffee. / Coffee. / Both.,Simple preference.,Beginner,L1,15
+Can you count to five?,"One, two, three, four, five.",Literal counting.,Beginner,L1,16
+What sound does a dog make?,Woof woof. / Bark.,Simple animal sound.,Beginner,L1,17
+Is the sky blue?,"Yes, it is. / Yes.","Simple ""Yes"" confirms understanding.",Beginner,L1,18
+Do you speak another language? What is it?,"Yes, I speak [language]. / Yes, [language]. / No.","Accept language name or simple ""No.""",Beginner,L1,19
+What is your favorite animal?,My favorite animal is cat. / Cat.,Animal name is sufficient.,Beginner,L1,20
+Are you happy to learn English today?,"Yes, I am happy. / Yes. / Happy.",Reinforce positive feelings towards learning.,Beginner,L1,21
+Can you tell me your name again?,My name is [user's name]. / [User's name].,Simple repetition of their name.,Beginner,L1,22
+What is one word you know in English?,Apple. / Water. / Thank you.,Any single English word they can recall.,Beginner,L1,23
+Is it cold or hot where you are?,It is hot. / Hot. / Cold.,Simple weather description.,Beginner,L1,24
+"Thank you for talking with me! Can you say ""goodbye"" in English?",Goodbye! / Bye!,Simple farewell.,Beginner,L1,25
+Hi again! What did you do yesterday?,"Yesterday, I worked. / I watched TV. / I cooked dinner.",Looking for simple past tense (regular verbs). AI can prompt if irregular verb is used incorrectly or rephrase.,Beginner,L2,26
+What do you usually do on weekends?,I usually relax. / I go to the park. / I sleep a lot.,"Focus on present simple, common activities.",Beginner,L2,27
+Can you tell me about your family?,I have a mother and a father. / I have two sisters. / My family is small.,Simple descriptions of family members.,Beginner,L2,28
+What kind of music do you like?,I like pop music. / I like classical. / I like [artist name].,Simple genre or artist.,Beginner,L2,29
+What's your favorite animal and why?,"I like dogs because they are friendly. / I like cats, they are cute.","Encouraging ""because"" for simple reasoning.",Beginner,L2,30
+Do you like to cook? What's your favorite food to make?,"Yes, I like to cook. I make pasta. / No, I don't like to cook.","Simple ""yes/no"" with a short follow-up or reason.",Beginner,L2,31
+What is the weather like today where you are?,It is sunny and hot. / It is rainy. / It is cloudy.,"Basic weather vocabulary and ""It is..."" structure.",Beginner,L2,32
+Where do you live? Can you describe your house or apartment simply?,I live in a house. It is big. / I live in an apartment. It has two rooms.,Simple description with basic adjectives.,Beginner,L2,33
+What foods do you eat for breakfast?,I eat bread and coffee. / I eat eggs. / I like cereal for breakfast.,Simple food items.,Beginner,L2,34
+What are you going to do tomorrow?,I am going to work. / I am going to see a friend. / I will study.,"Introduction to ""going to"" for future plans or simple ""will"".",Beginner,L2,35
+Do you play any sports or have a hobby?,"Yes, I play football. / My hobby is reading. / No, I don't.",Simple sports/hobby names.,Beginner,L2,36
+What do you like to do in the evenings?,I like to watch TV. / I read a book. / I sleep.,Focus on evening activities.,Beginner,L2,37
+Can you tell me about one friend you have?,My friend is [name]. He is nice. / She is from [country].,Simple description of a person.,Beginner,L2,38
+What time do you usually wake up?,I usually wake up at 7 o'clock. / I wake up at 6 AM.,"Using ""at"" for time.",Beginner,L2,39
+What is something you want to learn in the future?,I want to learn Spanish. / I want to learn to play guitar.,"Using ""want to.""",Beginner,L2,40
+Do you like to read books? What kind?,"Yes, I like to read. I like stories. / No, I don't.",Simple confirmation and basic genre.,Beginner,L2,41
+"What is your favorite season (spring, summer, fall, winter)? Why?",I like summer because it is hot. / My favorite is winter.,Simple season name and basic reason.,Beginner,L2,42
+Where do you go shopping for food?,I go to the supermarket. / I go to a small shop.,Simple place names.,Beginner,L2,43
+Have you ever traveled to another city or country? Where?,"Yes, I traveled to Paris. / No, I didn't.","Introduction to past travel, simple past tense for ""traveled.""",Beginner,L2,44
+What makes you happy?,My family makes me happy. / Food makes me happy. / Sunshine makes me happy.,Simple subject + verb + object.,Beginner,L2,45
+What did you eat for dinner last night?,"Last night, I ate chicken. / I had rice and fish. / I ate pizza.","Focus on past tense for ""eat/had.""",Beginner,L2,46
+What color is your shirt today?,My shirt is blue. / It is black. / I have a white shirt.,Simple color identification.,Beginner,L2,47
+Do you have a favorite movie or TV show?,"Yes, my favorite movie is [movie title]. / I like [show name] on TV.",Simple title recall.,Beginner,L2,48
+Is there something you don't like to do?,I don't like to clean. / I don't like to wake up early. / No.,"Using ""don't like to"" + verb.",Beginner,L2,49
+Thank you for our chat! What is one new English word you learned today?,"I learned ""yesterday."" / ""Weekend."" / ""Cook.""",Encourages reflection and vocabulary recall.,Beginner,L2,50
+What are you doing right now?,I am studying English. / I am sitting and talking. / I am eating lunch.,Focus on present continuous. AI can confirm and ask for more detail if possible.,Beginner,L3,51
+What kind of clothes do you like to wear? Why?,I like to wear comfortable clothes because they feel good. / I like jeans and T-shirts.,"Encouraging reasons with ""because"" and more specific vocabulary.",Beginner,L3,52
+Can you describe a typical morning for you?,"First, I wake up, then I drink coffee, then I go to work.",Sequential actions using present simple. AI can ask for time or more detail.,Beginner,L3,53
+Do you ever feel sad or angry? When?,"Yes, I feel sad sometimes when I am tired. / I feel angry when traffic is bad.","Using adverbs of frequency (""sometimes"") and simple cause/effect.",Beginner,L3,54
+Tell me about your favorite place to visit in your city. What is it like?,My favorite place is the park. It is big and green. / I like the library. It is quiet.,Descriptions using simple adjectives.,Beginner,L3,55
+What is something you are learning in English these days?,I am learning new vocabulary words. / I am studying verb tenses. / I am learning about grammar.,Using present continuous for ongoing learning.,Beginner,L3,56
+Do you prefer coffee or tea? How do you usually drink it?,"I prefer tea. I usually drink it with milk. / I like coffee, black.","Asking for preferences and simple details (""with milk,"" ""black"").",Beginner,L3,57
+What is a place you really want to travel to in the future? Why?,I want to travel to Japan because I like the culture. / I want to see Paris.,"Simple future plans with ""want to"" and a basic reason.",Beginner,L3,58
+Describe your best friend. What do they look like? What are they like?,My friend is tall and has black hair. She is very funny. / He is kind and smart.,Using adjectives to describe appearance and personality.,Beginner,L3,59
+What did you do last weekend?,"Last weekend, I visited my parents. / I went to the beach. / I stayed home.","Consistent use of simple past tense, including common irregular verbs.",Beginner,L3,60
+How often do you exercise or do something active?,I usually exercise three times a week. / I sometimes walk. / I never exercise.,Using adverbs of frequency and quantification.,Beginner,L3,61
+What do you like to do when you are on vacation?,I like to relax on the beach. / I like to explore new cities. / I travel.,Expressing preferences for activities.,Beginner,L3,62
+Is there a type of food you really don't like? Why not?,I don't like spicy food because it is too hot. / I don't like mushrooms.,Stating a dislike and providing a simple reason.,Beginner,L3,63
+What are you planning to do next week?,"Next week, I am planning to finish my project. / I am going to meet friends.","Using ""planning to"" or ""going to"" for future plans.",Beginner,L3,64
+Tell me about a happy memory you have.,I was happy when I graduated. / My happy memory is my birthday last year.,Simple past events or experiences.,Beginner,L3,65
+What is your favorite type of movie? Why?,I like action movies because they are exciting. / I like comedies. They are funny.,Expressing preferences for movie genres with a simple reason.,Beginner,L3,66
+Do you usually listen to music when you study or work?,"Yes, I usually listen to soft music. / No, I prefer silence.",Simple habits related to music.,Beginner,L3,67
+Can you describe your personality in a few words?,I am quiet and friendly. / I am active and talkative.,Using basic adjectives for self-description.,Beginner,L3,68
+What's the weather usually like in your country in June?,"In June, it is usually hot and rainy. / It is sunny.",Descriptions of typical weather patterns. (Adjust month based on actual current month in their location),Beginner,L3,69
+What is something you are good at?,I am good at drawing. / I am good at playing soccer. / I am good at cooking.,"Using ""good at"" + gerund or noun.",Beginner,L3,70
+Where do you usually eat lunch? What do you eat?,I usually eat lunch at home. I eat rice and vegetables. / I eat in a restaurant.,Describing routine and food.,Beginner,L3,71
+Do you prefer to learn alone or with other people? Why?,"I prefer to learn alone because it is quiet. / I like to learn with friends, it's fun.",Expressing preference and simple reason.,Beginner,L3,72
+What did you buy the last time you went shopping?,I bought some new clothes. / I bought food. / I bought a book.,"Using simple past tense for ""buy.""",Beginner,L3,73
+Is there something new you want to try soon?,"Yes, I want to try learning a new language. / I want to try a new sport.","Using ""want to try"" for future aspirations.",Beginner,L3,74
+That was a good chat! What is one interesting thing you learned or talked about today?,I talked about my family. / I learned new words about weather. / I talked about my hobby.,Encourages reflection and vocabulary/topic recall.,Beginner,L3,75
+Tell me about your favorite movie or book. Why do you like it so much?,My favorite movie is [title]. I like it because the story is interesting. / It is funny.,"Encouraging ""because"" for reasons. Look for simple adjectives like ""interesting,"" ""funny,"" ""sad.""",Beginner,L4,76
+What is a skill you would like to learn in the future? Why is it interesting to you?,"I would like to learn to play guitar because I like music. / I want to learn cooking, so I can make food.","""Would like to"" or ""want to"" for aspirations. Simple reasons.",Beginner,L4,77
+Have you ever tried a new food that you didn't like? What was it?,"Yes, I tried [food name]. I did not like it. / No, I didn't try new food.","Simple past tense for experiences. ""Did not like"" is common.",Beginner,L4,78
+Describe a typical day at your work or school. What do you usually do?,I usually start work at 9 AM. Then I have meetings. I finish at 5 PM.,Sequential actions using present simple. AI can ask for specific tasks or details.,Beginner,L4,79
+What do you think is the best way to learn English?,I think speaking with people is the best way. / I think listening to music helps.,"Expressing opinion using ""I think"" and gerunds (speaking, listening).",Beginner,L4,80
+"If you could travel anywhere in the world, where would you go and why?","I would go to New York because it is a big city. / I would go to Japan, I like the culture.",Simple conditional (would go). Basic reasons.,Beginner,L4,81
+What kind of presents do you like to give to other people?,I like to give books. / I like to give clothes. / I like to give useful gifts.,Describing types of gifts.,Beginner,L4,82
+Tell me about a time you felt proud of something you did.,I felt proud when I passed my English test. / I felt proud when I helped my friend.,Simple past tense for emotions and actions.,Beginner,L4,83
+How do you usually relax after a busy day?,I usually watch TV. / I listen to music. / I read a book.,Simple activities.,Beginner,L4,84
+What are your plans for the upcoming holiday?,I am going to visit my family. / I will relax at home. / We will go on a trip.,"Using ""going to"" or ""will"" for future plans.",Beginner,L4,85
+What is something you really want to buy in the future?,I want to buy a new phone. / I want to buy a car. / I want to buy a house.,Simple desires.,Beginner,L4,86
+Do you think it's important to be on time? Why or why not?,"Yes, I think it is important because it is respectful. / No, sometimes it's okay to be late.",Expressing simple opinion with a reason.,Beginner,L4,87
+Describe a happy event that happened recently in your life.,"Last month, I went to a concert. It was very happy. / My friend came to visit me.",Simple past tense for events. Use of basic adjectives for feelings.,Beginner,L4,88
+What should someone do if they want to stay healthy?,They should exercise every day. / They should eat good food. / Sleep a lot.,"Using ""should"" for advice.",Beginner,L4,89
+"What kind of weather do you prefer? Sunny, rainy, snowy, or cloudy?",I prefer sunny weather because I like outside activities. / I like snowy weather.,Expressing preference and simple reason.,Beginner,L4,90
+"If you had a free day with no plans, what would you do?",I would sleep a lot. / I would read books. / I would go to the park.,Simple conditional (would + verb).,Beginner,L4,91
+What are some things you do to help the environment?,I recycle plastic. / I don't use plastic bags. / I turn off the lights.,Simple actions related to eco-friendliness.,Beginner,L4,92
+Can you tell me about a big city you know well? What's it like?,[City Name] is a big city. It has many tall buildings. / It is very busy.,Simple descriptions using adjectives.,Beginner,L4,93
+What is your favorite type of restaurant? What food do you order there?,I like Italian restaurants. I order pasta. / I like Indian food. I eat biryani.,Identifying type of restaurant and specific food. (Using current location reference: Hyderabad -> Biryani).,Beginner,L4,94
+Have you ever helped someone? What did you do?,"Yes, I helped my friend with homework. / I helped my mother cook.",Simple past tense for actions.,Beginner,L4,95
+What is one challenge you have in learning English? How do you try to overcome it?,Speaking is difficult. I try to talk more. / Vocabulary is hard. I learn new words every day.,Identifying a challenge and a simple strategy.,Beginner,L4,96
+What do you enjoy doing with your family or friends?,I enjoy watching movies with them. / We enjoy eating dinner together.,"Using ""enjoy"" + gerund.",Beginner,L4,97
+"If you could learn any new language instantly, which one would it be and why?","I would learn Spanish because it is useful. / I would learn French, it sounds beautiful.",Simple conditional and basic reasons.,Beginner,L4,98
+What are some things you use your phone for every day?,I use my phone for calls and messages. / I use it for reading news. / For games.,Simple uses of a common object.,Beginner,L4,99
+Thanks for the great conversation! What is one interesting thought or idea you have about learning English now?,I think English is important. / I think practice is good. / It is fun.,Encourages reflection on the learning process itself.,Beginner,L4,100
