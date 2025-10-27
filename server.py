@@ -11,7 +11,7 @@ from database.user_progress_db import UserProgressDB
     
 load_dotenv()
 sarvam_api = SarvamAPI()
-llm = ChatOpenAI()
+llm = ChatOpenAI(model="gpt-5-nano", temperature=0.7)
 db = UserProgressDB()
 
 # Page config
@@ -53,6 +53,7 @@ def creds_entered():
         st.error("Username/password is incorrect")
         return False
 def authentication():
+    st.title("Welcome to LangOdyssey! Please authenticate yourself.")
     st.text_input(label="Name: ",value="",key="user")
     st.text_input(label="Password",value="",key="passwd",type="password")
     st.button("Login",on_click=creds_entered)
@@ -60,18 +61,13 @@ def authentication():
 
 def init_prompts():
     lesson_prompt = PromptTemplate(
-    input_variables=["level", "stage", "prompt", "language"],
+    input_variables=["level", "stage", "prompt", "language", "expected_user_response"],
     template="""
-You are a language tutor helping a {level} {stage} {language} learner.
-Teach the lesson {prompt}.
+You are an English tutor for {language} speakers at {level} level.
 
-Explain what {prompt} means in {language} (using the native script).
+Present the English phrase "{prompt}" to the learner. Explain what it means in {language} using native script. Show them how to respond in English with "{expected_user_response}". Then ask the learner in {language} (using native script) to practice responding in English.
 
-Show how to reply in English to this prompt, written in the native script.
-
-Ask the learner (in {language}, using native script) to respond in English to {prompt}.
-
-Write everything in {language’s native script, except the English prompt.   
+Write everything in {language} native script except the English phrases being taught.
 """
 )
 
@@ -85,9 +81,7 @@ User said (in {language}): "{input}"
 
 Instructions:
 
-If needed, explain the English sentence in {language} (native script).
-
-Give short, natural feedback in {language}, using native script.
+Give short, natural and constructive feedback in {language}, using native script.
 Keep everything in {language}, except the English sentence.
 """
 )
@@ -133,19 +127,20 @@ def updateUserLevelAndStage():
 
 def start_lesson(db, lesson_chain, prompt_id, level, stage, language):
     prompt = db.get_prompt(prompt_id)
-    
+    expected_user_response = db.get_expected_response(prompt_id)
     lesson = lesson_chain.run(
         level=level,
         stage=stage,
         prompt=prompt,
-        language=language
+        language=language,
+        expected_user_response=expected_user_response
     )
     
     return lesson
     
 
 def save_audio():
-    audio_value = st.audio_input("Record your response", sample_rate=44100,width="stretch")
+    audio_value = st.audio_input("Record your response", sample_rate=44100,width="stretch", key = f"audio_{st.session_state.prompt_id}")
     if audio_value is not None:
         with open("temp.wav", "wb") as f:
             f.write(audio_value.getbuffer())
@@ -154,7 +149,6 @@ def save_audio():
 
 def expectedResponseAudio():
     expected_response = db.get_expected_response(st.session_state.prompt_id)
-    print(expected_response)
     audio_bytes = sarvam_api.text_to_speech(expected_response)
     st.audio(audio_bytes, format="audio/wav")
 
@@ -165,7 +159,6 @@ def process_response(sarvam_api, db, tutor_chain, evaluation_chain, prompt_id, l
     # Get transcription
     full_path = os.path.abspath("temp.wav")
     user_input = sarvam_api.speech_to_text(full_path)
-    print(user_input)
     expected_response = db.get_expected_response(prompt_id)
     
     # Get feedback
@@ -213,7 +206,6 @@ def reset_lesson_state():
 
 def main():
     init_session_state()
-    st.title("Welcome to LangOdyssey! Please authenticate yourself.")
     if not st.session_state.authenticated:
         authentication()
         return
@@ -222,11 +214,11 @@ def main():
     threshold = 0.6
 
     if(st.session_state.prompt_id % 26 ==0):
-        st.success("🎉 Congratulations! You have completed all lessons in this stage." \
+        st.toast("🎉 Congratulations! You have completed all lessons in this stage." \
         "You will be advanced to the next stage.")
     
     if(st.session_state.prompt_id % 101 ==0):
-        st.success("🎉 Congratulations! You have completed all stages in this level." \
+        st.toast("🎉 Congratulations! You have completed all stages in this level." \
         "You will be advanced to the next level.")
     
     # UI Layout
@@ -290,7 +282,7 @@ def main():
             
             st.session_state.feedback_data = feedback_data
             st.session_state.show_feedback = True
-            st.rerun()
+          #  st.rerun()
     
     # Display feedback
     if st.session_state.show_feedback:
