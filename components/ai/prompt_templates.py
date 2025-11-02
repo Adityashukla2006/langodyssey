@@ -17,17 +17,22 @@ Write everything in {language} native script except the English phrases being ta
         )
 
         tutor_prompt = PromptTemplate(
-            input_variables=["level", "stage", "prompt", "notes_for_ai", "input", "language"],
-            template="""
+    input_variables=["level", "stage", "prompt", "expected_response", "input", "language"],
+    template="""
 You are an English tutor for a {level} {stage} learner who speaks {language}.
-Lesson: "{prompt}"
-User said (in {language}): "{input}"
 
-Instructions:
-Give short, natural and constructive feedback in {language}, using native script.
-Keep everything in {language}, except the English sentence.
+Lesson: "{prompt}"
+Expected response (in English): "{expected_response}"
+User's actual response (in English): "{input}"
+
+Task:
+1. Briefly explain the main differences between the expected and actual responses.
+2. Give one short line of feedback or advice to help the learner improve next time.
+
+Respond in {language}, using native script wherever possible.
+Keep everything in {language}, except the English sentences.
 """
-        )
+)
 
         evaluation_prompt = PromptTemplate(
             input_variables=["level", "stage", "feedback", "expected_response", "user_response", "language"],

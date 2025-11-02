@@ -3,14 +3,14 @@ import requests
 import base64
 from typing import Optional, Dict, Any
 from dotenv import load_dotenv
+import streamlit as st
 
 load_dotenv()
-
 
 class SarvamAPI:
     """Client for Sarvam AI's text-to-speech and speech-to-text APIs"""
     
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self,language : Optional[str] = None, api_key: Optional[str] = None):
         """Initialize the Sarvam API client"""
         self.api_key = api_key or os.getenv("SARVAM_API_KEY")
         if not self.api_key:
@@ -18,8 +18,8 @@ class SarvamAPI:
         
         self.tts_url = "https://api.sarvam.ai/text-to-speech"
         self.stt_url = "https://api.sarvam.ai/speech-to-text"
-        
-    
+        self.language_code = language
+
     def text_to_speech(self, text: str, output_path: Optional[str] = None):
         """
         Convert text to speech using Sarvam's TTS API
@@ -131,5 +131,13 @@ class SarvamAPI:
             
         except requests.exceptions.RequestException as e:
             print(f"Error during translation: {e}")
-            return ""
+            return "Could not be translated"
+        
+    def t(self, text):
+        return cached_translate(text, self.language_code)
+    
 
+sarvam_api = SarvamAPI()
+@st.cache_data(ttl=3600)
+def cached_translate(text,lang):
+    return sarvam_api.translate_text(text, target_language=lang)
